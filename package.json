@@ -1,0 +1,10 @@
+{
+  "name": "personal-assistant-ext",
+  "version": "0.0.1",
+  "description": "A Browser based Personal Assistant Extension",
+  "main": "index.js",
+  "scripts": {
+  },
+  "author": "Malik Henry",
+  "license": "MIT"
+}

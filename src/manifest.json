@@ -1,0 +1,25 @@
+{
+    "name": "personal-assistant",
+    "description" : "A Browser based Personal Assistant",
+    "version": "1.0",
+    "manifest_version": 2,
+    "permissions": 
+    [
+        "activeTab",
+        "tabs",
+        "<all_urls>"
+    ],
+    "content_scripts": 
+    [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["content.js"]
+        }
+    ],
+    "background": 
+    {
+        "scripts": ["background.js", "menu.js"],
+        "persistent": false
+    },
+    "options_page": "options.html"
+}
