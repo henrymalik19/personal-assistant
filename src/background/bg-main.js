@@ -1,3 +1,10 @@
+const menu = require('./bg-commands.js');
+
+chrome.contentSettings.microphone.set({
+    primaryPattern: 'https://*/*',
+    setting: "allow"
+});
+
 let tabState = {
     previous: '',
     current: '',
@@ -18,10 +25,7 @@ chrome.tabs.query({
     }
 });
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    console.log(message);
-});
-
+// Listen for Active Tab Change Events
 chrome.tabs.onActivated.addListener(activeTab => {
     
     tabState = {
@@ -34,3 +38,8 @@ chrome.tabs.onActivated.addListener(activeTab => {
     chrome.tabs.sendMessage(tabState.previous.tabId, {run: "stopRecognition", currentTab: false});
     chrome.tabs.sendMessage(tabState.current.tabId, {run: "startRecognition", currentTab: true});
 })
+
+// Listen to Command Messages from Tabs
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+    menu(msg.command, sender.tab.id, msg.options);
+});

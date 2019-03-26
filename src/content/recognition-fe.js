@@ -1,5 +1,7 @@
+const parseTranscript = require('./co-commands.js');
+
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-const SpeechRecognitionEvent = window.SpeechRecognitionEvent || window.webkitSpeechRecognitionEvent
+// const SpeechRecognitionEvent = window.SpeechRecognitionEvent || window.webkitSpeechRecognitionEvent
 
 let recognition = new SpeechRecognition();
 
@@ -13,8 +15,8 @@ recognition.maxAlternatives = 1;
 */////////////////////////////////////////////////
 recognition.onresult = (e) => {
     let transcript = e.results[0][0].transcript;
-    console.log(transcript);
-    chrome.runtime.sendMessage({transcript: transcript});
+
+    parseTranscript(transcript);
 }
 
 recognition.onerror = (e) => {
@@ -42,7 +44,7 @@ function startRecognition() {
 
 
 /*//////////////////////////////////////////////////
-######## Start Recognition when leaving tab ########
+######## Stop Recognition when leaving tab ########
 *///////////////////////////////////////////////////
 function stopRecognition() {
     recognition.stop();
@@ -51,9 +53,10 @@ function stopRecognition() {
 }
 
 
-/*///////////////////////////////////////////////////////////////////////////////
-## Listen to Messages from Extension to Start and Stop Recognition (functions) ##
-*////////////////////////////////////////////////////////////////////////////////
+/*//////////////////////////////////////////////////////////////////////
+############## Listen to Messages from Extension to Start ##############
+################# and Stop Recognition on Current Tab ##################
+*///////////////////////////////////////////////////////////////////////
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
     if(msg.run === 'startRecognition') {
